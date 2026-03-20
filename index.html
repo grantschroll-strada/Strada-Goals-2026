@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Strada — Target Outcome Goals CY2026</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,700;1,9..144,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --strada-navy: #0B1D3A;
+  --strada-teal: #E65100;
+  --strada-teal-light: #FFF3E0;
+  --strada-teal-dark: #BF360C;
+  --strada-accent: #FF8F00;
+  --strada-gold: #F9A825;
+  --strada-gold-light: #FFF8E1;
+  --strada-blue-text: #1565C0;
+  --surface: #F7F9FB;
+  --surface-card: #FFFFFF;
+  --text-primary: #1A2332;
+  --text-secondary: #556373;
+  --text-muted: #8A96A3;
+  --border: #E2E8F0;
+  --green-dot: #43A047;
+  --blue-dot: #1E88E5;
+  --shadow-sm: 0 1px 3px rgba(11,29,58,0.06);
+  --shadow-md: 0 4px 16px rgba(11,29,58,0.08);
+  --shadow-lg: 0 8px 32px rgba(11,29,58,0.12);
+  --radius: 12px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'DM Sans', -apple-system, sans-serif;
+  background: var(--surface);
+  color: var(--text-primary);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ─── PASSWORD GATE ─── */
+#password-gate {
+  position: fixed; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--strada-navy);
+  z-index: 9999;
+  transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+#password-gate.hidden {
+  opacity: 0; visibility: hidden; pointer-events: none;
+}
+.gate-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  backdrop-filter: blur(24px);
+  border-radius: 20px;
+  padding: 56px 48px;
+  width: 420px;
+  text-align: center;
+  animation: gateIn 0.8s ease;
+}
+@keyframes gateIn {
+  from { opacity: 0; transform: translateY(24px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+.gate-logo {
+  font-family: 'Fraunces', serif;
+  font-weight: 700;
+  font-size: 2.2rem;
+  color: #fff;
+  letter-spacing: -0.5px;
+  margin-bottom: 6px;
+}
+.gate-subtitle {
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.45);
+  text-transform: uppercase;
+  letter-spacing: 2.5px;
+  margin-bottom: 40px;
+  font-weight: 500;
+}
+.gate-input-wrap {
+  position: relative;
+  margin-bottom: 16px;
+}
+.gate-input-wrap input {
+  width: 100%;
+  padding: 16px 20px;
+  font-size: 1rem;
+  font-family: 'DM Sans', sans-serif;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 10px;
+  color: #fff;
+  outline: none;
+  transition: border 0.3s, box-shadow 0.3s;
+}
+.gate-input-wrap input::placeholder { color: rgba(255,255,255,0.3); }
+.gate-input-wrap input:focus {
+  border-color: var(--strada-accent);
+  box-shadow: 0 0 0 3px rgba(230,81,0,0.15);
+}
+.gate-btn {
+  width: 100%;
+  padding: 16px;
+  font-size: 1rem;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
+  background: var(--strada-teal);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.15s;
+}
+.gate-btn:hover { background: var(--strada-teal-dark); }
+.gate-btn:active { transform: scale(0.985); }
+.gate-error {
+  color: #EF5350;
+  font-size: 0.85rem;
+  margin-top: 12px;
+  min-height: 20px;
+  transition: opacity 0.3s;
+}
+
+/* ─── MAIN CONTENT ─── */
+#main-content {
+  opacity: 0;
+  transition: opacity 0.8s ease 0.3s;
+}
+#main-content.visible { opacity: 1; }
+
+/* ─── HERO ─── */
+.hero {
+  background: var(--strada-navy);
+  color: #fff;
+  padding: 64px 0 56px;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -40%; right: -10%;
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(230,81,0,0.18) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: -30%; left: 10%;
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(255,143,0,0.1) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 40px;
+  position: relative;
+  z-index: 1;
+}
+.hero-eyebrow {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  color: var(--strada-accent);
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+.hero h1 {
+  font-family: 'Fraunces', serif;
+  font-size: 2.8rem;
+  font-weight: 700;
+  letter-spacing: -1px;
+  line-height: 1.15;
+  margin-bottom: 16px;
+}
+.hero-desc {
+  font-size: 1.05rem;
+  color: rgba(255,255,255,0.6);
+  max-width: 620px;
+  line-height: 1.65;
+}
+
+/* ─── LEGEND BAR ─── */
+.legend-bar {
+  background: var(--surface-card);
+  border-bottom: 1px solid var(--border);
+  padding: 16px 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: var(--shadow-sm);
+}
+.legend-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 40px;
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+.legend-dot {
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.legend-dot.new  { background: var(--green-dot); }
+.legend-dot.cont { background: var(--blue-dot); }
+.legend-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+.legend-chip.blue { background: #E3F2FD; color: var(--strada-blue-text); }
+.legend-chip.black { background: #ECEFF1; color: var(--text-primary); }
+.legend-spacer { flex: 1; }
+.expand-all-btn {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--strada-teal);
+  background: var(--strada-teal-light);
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.expand-all-btn:hover { background: #B2DFDB; }
+
+/* ─── WEIGHT CHIPS (at section level) ─── */
+.section-weight {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 5px;
+  background: rgba(230,81,0,0.1);
+  color: var(--strada-teal-dark);
+}
+
+/* ─── CONTENT AREA ─── */
+.content-area {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 40px 80px;
+}
+
+/* ─── SECTION HEADER ─── */
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+  margin-top: 48px;
+}
+.section-header:first-child { margin-top: 0; }
+.section-header h2 {
+  font-family: 'Fraunces', serif;
+  font-size: 1.55rem;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+  color: var(--text-primary);
+}
+.section-line {
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+/* ─── GOAL CARD (PILLAR) ─── */
+.goal-card {
+  background: var(--surface-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: 16px;
+  overflow: hidden;
+  transition: box-shadow 0.3s, border-color 0.3s;
+}
+.goal-card:hover {
+  box-shadow: var(--shadow-md);
+  border-color: #CBD5E1;
+}
+.goal-card-header {
+  padding: 20px 24px;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.2s;
+}
+.goal-card-header:hover {
+  background: rgba(230,81,0,0.02);
+}
+.goal-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px; height: 36px;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.goal-number.strategic { background: var(--strada-teal); color: #fff; }
+.goal-number.operational { background: var(--strada-gold); color: var(--strada-navy); }
+.goal-number.financial { background: var(--strada-navy); color: #fff; }
+
+.goal-card-title-area { flex: 1; min-width: 0; }
+.goal-card-label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+.goal-card-title {
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.45;
+  color: var(--text-primary);
+}
+.goal-card-title.target-75 { color: var(--strada-blue-text); }
+
+.goal-chevron {
+  width: 24px; height: 24px;
+  flex-shrink: 0;
+  margin-top: 6px;
+  transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
+  color: var(--text-muted);
+}
+.goal-card.open .goal-chevron { transform: rotate(180deg); }
+
+.goal-card-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.45s cubic-bezier(0.4,0,0.2,1);
+}
+.goal-card.open .goal-card-body {
+  max-height: 1200px;
+}
+.goal-card-body-inner {
+  padding: 0 24px 24px;
+  padding-left: 76px;
+}
+
+/* ─── SUB-GOAL ROW ─── */
+.sub-goal {
+  display: flex;
+  gap: 14px;
+  padding: 14px 0;
+  border-top: 1px solid #F1F5F9;
+  align-items: flex-start;
+  animation: fadeSubIn 0.35s ease both;
+}
+.sub-goal:first-child { border-top: none; }
+@keyframes fadeSubIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.sub-num {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  min-width: 32px;
+  padding-top: 1px;
+}
+.sub-content { flex: 1; min-width: 0; }
+.sub-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--strada-teal-dark);
+  margin-bottom: 3px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.sub-text {
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: var(--text-secondary);
+}
+.sub-text.target-75 { color: var(--strada-blue-text); }
+.initiative-tag {
+  display: inline-block;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.initiative-tag.new  { background: var(--green-dot); }
+.initiative-tag.cont { background: var(--blue-dot); }
+
+/* ─── FINANCIAL BOX ─── */
+.financial-box {
+  background: linear-gradient(135deg, var(--strada-navy), #142A4F);
+  border-radius: var(--radius);
+  padding: 32px;
+  color: #fff;
+  margin-top: 16px;
+}
+.financial-box h3 {
+  font-family: 'Fraunces', serif;
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+.spend-rate {
+  font-family: 'Fraunces', serif;
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--strada-accent);
+  letter-spacing: -1px;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+.spend-label {
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.5);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 24px;
+}
+.formula-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.formula-item {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px;
+  padding: 16px;
+}
+.formula-item-label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: rgba(255,255,255,0.45);
+  margin-bottom: 6px;
+}
+.formula-item-text {
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: rgba(255,255,255,0.85);
+}
+.financial-footnote {
+  margin-top: 20px;
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.4);
+  font-style: italic;
+}
+
+/* ─── SUMMARY STATS ─── */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 40px;
+}
+.stat-card {
+  background: var(--surface-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  text-align: center;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+.stat-value {
+  font-family: 'Fraunces', serif;
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--strada-teal);
+  letter-spacing: -1px;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.stat-label {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 500;
+}
+
+/* ─── FOOTER ─── */
+.footer {
+  border-top: 1px solid var(--border);
+  padding: 32px 0;
+  text-align: center;
+}
+.footer-text {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 768px) {
+  .hero h1 { font-size: 2rem; }
+  .hero-inner, .legend-inner, .content-area { padding-left: 20px; padding-right: 20px; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .formula-grid { grid-template-columns: 1fr; }
+  .goal-card-body-inner { padding-left: 24px; }
+  .legend-inner { gap: 16px; }
+}
+
+/* ─── ENTRANCE ANIMATIONS ─── */
+.animate-in {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.animate-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+</style>
+</head>
+<body>
+
+<!-- PASSWORD GATE -->
+<div id="password-gate">
+  <div class="gate-card">
+    <div class="gate-logo">strada</div>
+    <div class="gate-subtitle">Executive Dashboard</div>
+    <div class="gate-input-wrap">
+      <input type="password" id="pw-input" placeholder="Enter password" autocomplete="off" />
+    </div>
+    <button class="gate-btn" id="pw-btn">Continue</button>
+    <div class="gate-error" id="pw-error">&nbsp;</div>
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div id="main-content">
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="hero-eyebrow">Calendar Year 2026</div>
+      <h1>Target Outcome Goals</h1>
+      <p class="hero-desc">Annual goals and target outcomes by year-end 2026 for Strada's major strategic, operational, and financial initiatives.</p>
+    </div>
+  </header>
+
+  <!-- STICKY LEGEND -->
+  <div class="legend-bar">
+    <div class="legend-inner">
+      <span class="legend-item"><span class="legend-dot new"></span> New 2026 Initiative</span>
+      <span class="legend-item"><span class="legend-dot cont"></span> Continued Initiative</span>
+      <span class="legend-chip blue">Blue = ≥ 75% target</span>
+      <span class="legend-chip black">Black = 100% target</span>
+      <span class="legend-spacer"></span>
+      <button class="expand-all-btn" id="expand-toggle">Expand All</button>
+    </div>
+  </div>
+
+  <div class="content-area">
+
+    <!-- SUMMARY STATS -->
+    <div class="stats-grid animate-in">
+      <div class="stat-card">
+        <div class="stat-value">6</div>
+        <div class="stat-label">Strategic Pillars</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">24</div>
+        <div class="stat-label">Sub-Goals</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">80%</div>
+        <div class="stat-label">Strategic Weight</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">50</div>
+        <div class="stat-label">States Covered</div>
+      </div>
+    </div>
+
+    <!-- STRATEGIC SECTION -->
+    <div class="section-header animate-in">
+      <h2>Strategic Goals</h2>
+      <span class="section-weight">80% Weight</span>
+      <span class="section-line"></span>
+    </div>
+    <p style="font-size:0.88rem; color:var(--text-secondary); margin-bottom:24px; max-width:700px;" class="animate-in">Completion rate of at least 75% / 100% for major initiatives, on average.</p>
+
+    <!-- 1. Clear Outcomes -->
+    <div class="goal-card animate-in" data-section="strategic">
+      <div class="goal-card-header" onclick="toggleCard(this)">
+        <div class="goal-number strategic">1</div>
+        <div class="goal-card-title-area">
+          <div class="goal-card-label">Clear Outcomes — 2026 Annual Goal</div>
+          <div class="goal-card-title target-75">40 states with a status of Leading or Advanced in the 2026 SOI Clear Outcomes assessment</div>
+        </div>
+        <svg class="goal-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="goal-card-body">
+        <div class="goal-card-body-inner">
+          <div class="sub-goal">
+            <div class="sub-num">1.1</div>
+            <div class="sub-content">
+              <div class="sub-label"><span class="initiative-tag cont"></span>State E2E Data Progress</div>
+              <div class="sub-text">47+ states engaged through PSEO Coalition; 42+ states making progress on 2+ elements</div>
+            </div>
+          </div>
+          <div class="sub-goal">
+            <div class="sub-num">1.2</div>
+            <div class="sub-content">
+              <div class="sub-label"><span class="initiative-tag cont"></span>Enhanced Wage Records (EWR)</div>
+              <div class="sub-text target-75">5+ new states adopted or committed to adopt enhancements incl. occupation; multi-state EWR analytics project launched; 1+ federal levers established</div>
+            </div>
+          </div>
+          <div class="sub-goal">
+            <div class="sub-num">1.3</div>
+            <div class="sub-content">
+              <div class="sub-label"><span class="initiative-tag cont"></span>NDC Data</div>
+              <div class="sub-text target-75">Strada & 3+ NDC grantees aligned on WFP data multi-year strategy; 40+ states engaged w/EERC or Strada-supported WFP TA to improve NDC data</div>
+            </div>
+          </div>
+          <div class="sub-goal">
+            <div class="sub-num">1.4</div>
+            <div class="sub-content">
+              <div class="sub-label"><span class="initiative-tag new"></span>Learning Mobility Framework</div>
+              <div class="sub-text">3 new states committed to form LM Collaborative; National LM consortium and support infrastructure launched</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. Quality Coaching -->
+    <div class="goal-card animate-in" data-section="strategic">
+      <div class="goal-card-header" onclick="toggleCard(this)">
+        <div class="goal-number strategic">2</div>
+        <div class="goal-card-title-area">
+          <div class="goal-card-label">Quality Coaching — 2026 Annual Goal</div>
+          <div class="goal-card-title">2+ state-scaled approaches to quality coaching implemented through promising pilots and proven models</div>
+        </div>
+        <svg class="goal-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="goal-card-body">
+        <div class="goal-card-body-inner">
+          <div class="sub-goal">
+            <div class="sub-num">2.1</div>
+            <div class="sub-content">
+              <div class="sub-label"><span class="initiative-tag cont"></span>QC Through Transition Coaching</div>
+              <div class="sub-text target-75">At least 1 state's secondary school systems articulated integration of the QC guiding principles in their policy or practice</div>
+            </div>
+          </div>
+          <div class="sub-goal">
+            <div class="sub-num">2.2</div>
+            <div class="sub-content">
+              <div class="sub-label"><span class="initiative-tag cont"></span>QC Principles in PSE</div>
+              <div class="sub-text">QC models implemented in 2+ public higher ed institutions per state in 2+ states; 2+ effective models for LMI & guidance in PSEs documented</div>
+            </div>
+          </div>
+          <div class="sub-goal">
+            <div class="sub-num">2.3</div>
+            <div class="sub-content">
+              <div class="sub-label"><span class="initiative-tag new"></span>Scalable QC Models via Statewide Initiatives</div>
+              <div class="sub-text">2+ state QC models identified; customizable toolkit designed for state-level implementation of quality coaching</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. Affordability -->
+    <div class="goal-card animate-in" data-section="strategic">
+      <div class="goal-card-header" onclick="toggleCard(this)">
+        <div class="goal-number strategic">3</div>
+        <div class="goal-card-title-area">
+          <div class="goal-card-label">Affordability — 2026 Annual Goal</div>
+          <div class="goal-card-title">Portfolio of 4 completion models in field testing, 3 transparency pilots completed, and 3 cost-sharing solutions developed</div>
+        </div>
+        <svg class="goal-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="goal-card-body">
+        <div class="goal-card-body-inner">
+          <div class="sub-goal">
+            <div class="sub-num">3.1</div>
+            <div class="sub-content">
+              <div class="sub-label"><span class="initiative-tag cont"></span>Strategies to Reduce Time to Completion</div>
+              <div class="sub-text">Portfolio of 4+ new scalable, high-quality program models that reduce time to completion confirmed & disseminated</div>
+            </div>
+          </div>
+          <div class="sub-goal">
+            <div class="sub-num">3.2</div>
+            <div class="sub-content">
+              <div class="sub-label"><span class="initiative-tag cont"></span>Institutional Price Transparency</div>
+              <div class="sub-text target-75">Partnering w/ACE, commitments from 3+ associations, 12+ institutions to adopt cost-transparency principles within EM</div>
+            </div>
+          </div>
+          <div class="sub-goal">
+            <div class="sub-num">3.3</div>
+            <div class="sub-content">
+              <div class="sub-label"><span class="initiative-tag new"></span>Innovative Cost-Sharing Models</div>
+              <div class="sub-text">3 cost-sharing models refined/advanced, including at least one at the state level, to reduce costs for low-income learners</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. Work-based Learning -->
+    <div class="goal-card animate-in" data-section="strategic">
+      <div class="goal-card-header" onclick="toggleCard(this)">
+        <div class="goal-number strategic">4</div>
+        <div class="goal-card-title-area">
+          <div class="goal-card-label">Work-Based Learning — 2026 Annual Goal</div>
+          <div class="goal-card-title target-75">One more state Advanced or Leading, and two or more effective approaches for scaled WBL identified</div>
+        </div>
+        <svg class="goal-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="goal-card-body">
+        <div class="goal-card-body-inner">
+          <div class="sub-goal">
+            <div class="sub-num">4.1</div>
+            <div class="sub-content">
+              <div class="sub-label"><span class="initiative-tag cont"></span>WBL Model in States and Institutions</div>
+              <div class="sub-text target-75">Cohorts of states, 4-yr insts., & comm. colleges launched and actively working to scale WBL for 2 & 4-yr students</div>
+            </div>
+          </div>
+          <div class="sub-goal">
+            <div class="sub-num">4.2</div>
+            <div class="sub-content">
+              <div class="sub-label"><span class="initiative-tag cont"></span>Actionable Tools for Employer Adoption</div>
+              <div class="sub-text">Industry-led employer efforts to scale WBL initiated in at least three states; supportive tools identified</div>
+            </div>
+          </div>
+          <div class="sub-goal">
+            <div class="sub-num">4.3</div>
+            <div class="sub-content">
+              <div class="sub-label"><span class="initiative-tag new"></span>Guidelines for Effective WBL Intermediaries</div>
+              <div class="sub-text target-75">10+ nat'l. or state endorsements for WBL framework; 5 intermediaries to adopt & test framework launched</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. Employer Alignment -->
+    <div class="goal-card animate-in" data-section="strategic">
+      <div class="goal-card-header" onclick="toggleCard(this)">
+        <div class="goal-number strategic">5</div>
+        <div class="goal-card-title-area">
+          <div class="goal-card-label">Employer Alignment — 2026 Annual Goal</div>
+          <div class="goal-card-title">Rigorous, validated EA framework developed for SOI 4.0; adoption of EA goals by 10+ state/nat'l chambers/business coalitions</div>
+        </div>
+        <svg class="goal-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="goal-card-body">
+        <div class="goal-card-body-inner">
+          <div class="sub-goal">
+            <div class="sub-num">5.1</div>
+            <div class="sub-content">
+              <div class="sub-label"><span class="initiative-tag new"></span>Development of State Strategic Talent Plans</div>
+              <div class="sub-text">Robust, expert-informed framework for SOI 4.0 developed; potential implementation models identified</div>
+            </div>
+          </div>
+          <div class="sub-goal">
+            <div class="sub-num">5.2</div>
+            <div class="sub-content">
+              <div class="sub-label"><span class="initiative-tag new"></span>Models for State EE Offices</div>
+              <div class="sub-text">EE office framework for SOI 4.0 defined at all 4 levels using rigorous, qualitative, expert-informed process</div>
+            </div>
+          </div>
+          <div class="sub-goal">
+            <div class="sub-num">5.3</div>
+            <div class="sub-content">
+              <div class="sub-label"><span class="initiative-tag new"></span>Access to High-ROI Majors</div>
+              <div class="sub-text">Classification framework for SOI 4.0 identified using thorough process; potential implementation models identified</div>
+            </div>
+          </div>
+          <div class="sub-goal">
+            <div class="sub-num">5.4</div>
+            <div class="sub-content">
+              <div class="sub-label"><span class="initiative-tag new"></span>Skills-First Practices</div>
+              <div class="sub-text">Leading strategies in Skills-First hiring practices identified; adoption rubric developed with key partners</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6. Cross-Cutting Initiatives -->
+    <div class="goal-card animate-in" data-section="strategic">
+      <div class="goal-card-header" onclick="toggleCard(this)">
+        <div class="goal-number strategic">6</div>
+        <div class="goal-card-title-area">
+          <div class="goal-card-label">Cross-Cutting Strategic Initiatives</div>
+          <div class="goal-card-title">SOI, Policy & Advocacy, Focus States, and CredLens</div>
+        </div>
+        <svg class="goal-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="goal-card-body">
+        <div class="goal-card-body-inner">
+          <div class="sub-goal">
+            <div class="sub-num">6.1</div>
+            <div class="sub-content">
+              <div class="sub-label"><span class="initiative-tag cont"></span>State Opportunity Index</div>
+              <div class="sub-text">2026 results published with all 5 focus areas for all 50 states; 10 states or state systems set targets related to Coaching, Affordability, or WBL</div>
+            </div>
+          </div>
+          <div class="sub-goal">
+            <div class="sub-num">6.2</div>
+            <div class="sub-content">
+              <div class="sub-label"><span class="initiative-tag cont"></span>Policy / Advocacy</div>
+              <div class="sub-text">10+ change-driver moves along the policy continuum (i.e., pre-adoption, adoption, or post-adoption) at state or federal levels</div>
+            </div>
+          </div>
+          <div class="sub-goal">
+            <div class="sub-num">6.3</div>
+            <div class="sub-content">
+              <div class="sub-label"><span class="initiative-tag cont"></span>Focus States</div>
+              <div class="sub-text">All technical assistance projects completed; state aspirations aligned with VA leaders; approach to scale state-level technical assistance recommended</div>
+            </div>
+          </div>
+          <div class="sub-goal">
+            <div class="sub-num">6.4</div>
+            <div class="sub-content">
+              <div class="sub-label"><span class="initiative-tag cont"></span>CredLens</div>
+              <div class="sub-text">200 issuers in Data Trust; premium tier features delivered; $1.7M in bookings achieved; at least four new outcomes data partners secured</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- OPERATIONAL SECTION -->
+    <div class="section-header animate-in">
+      <h2>Operational Goals</h2>
+      <span class="section-weight">10% Weight</span>
+      <span class="section-line"></span>
+    </div>
+    <p style="font-size:0.88rem; color:var(--text-secondary); margin-bottom:24px;" class="animate-in">Completion rate of 100%.</p>
+
+    <div class="goal-card animate-in" data-section="operational">
+      <div class="goal-card-header" onclick="toggleCard(this)">
+        <div class="goal-number operational">7</div>
+        <div class="goal-card-title-area">
+          <div class="goal-card-label">Operational Initiatives</div>
+          <div class="goal-card-title">Shared Services Optimization & Investment Program Modernization</div>
+        </div>
+        <svg class="goal-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="goal-card-body">
+        <div class="goal-card-body-inner">
+          <div class="sub-goal">
+            <div class="sub-num">7.1</div>
+            <div class="sub-content">
+              <div class="sub-label"><span class="initiative-tag cont"></span>Shared Services Optimization</div>
+              <div class="sub-text">Shared services optimized for updated affiliate portfolio consistent with Finance/Audit/Investment Committee targets</div>
+            </div>
+          </div>
+          <div class="sub-goal">
+            <div class="sub-num">7.2</div>
+            <div class="sub-content">
+              <div class="sub-label"><span class="initiative-tag cont"></span>Investment Program Modernization</div>
+              <div class="sub-text">Investment program modernization implemented in line with board-approved approach and timeline</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FINANCIAL SECTION -->
+    <div class="section-header animate-in">
+      <h2>Financial Goals</h2>
+      <span class="section-weight">10% Weight</span>
+      <span class="section-line"></span>
+    </div>
+
+    <div class="financial-box animate-in">
+      <h3>Spend Rate Target</h3>
+      <div class="spend-rate">4.6%</div>
+      <div class="spend-label">Spend Rate* — Same approach as CY2025</div>
+      <div class="formula-grid">
+        <div class="formula-item">
+          <div class="formula-item-label">Numerator</div>
+          <div class="formula-item-text">Strada Operating Budget less the sum of Collaborative Adjusted Operating Income and W/A Adj. EBITDA Budgets</div>
+        </div>
+        <div class="formula-item">
+          <div class="formula-item-label">Denominator</div>
+          <div class="formula-item-text">Most recent fiscal year-end three-year trailing consolidated net assets</div>
+        </div>
+      </div>
+      <div class="financial-footnote">* Excluding BoT/BIC-approved CredLens funding. Committee discretion to consider special situations.</div>
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="footer-text">Strada Education Foundation — Target Outcome Goals CY2026 — Confidential</div>
+  </div>
+
+</div>
+
+<script>
+// ─── PASSWORD GATE ───
+const gate = document.getElementById('password-gate');
+const main = document.getElementById('main-content');
+const pwInput = document.getElementById('pw-input');
+const pwBtn = document.getElementById('pw-btn');
+const pwError = document.getElementById('pw-error');
+
+function attemptLogin() {
+  if (pwInput.value === 'Strada') {
+    gate.classList.add('hidden');
+    main.classList.add('visible');
+    initAnimations();
+  } else {
+    pwError.textContent = 'Incorrect password. Please try again.';
+    pwInput.value = '';
+    pwInput.focus();
+    pwError.style.opacity = '1';
+  }
+}
+pwBtn.addEventListener('click', attemptLogin);
+pwInput.addEventListener('keydown', e => { if (e.key === 'Enter') attemptLogin(); });
+pwInput.focus();
+
+// ─── ACCORDION CARDS ───
+function toggleCard(header) {
+  const card = header.closest('.goal-card');
+  card.classList.toggle('open');
+}
+
+// Expand / Collapse all
+const expandBtn = document.getElementById('expand-toggle');
+let allExpanded = false;
+expandBtn.addEventListener('click', () => {
+  allExpanded = !allExpanded;
+  document.querySelectorAll('.goal-card').forEach(c => {
+    allExpanded ? c.classList.add('open') : c.classList.remove('open');
+  });
+  expandBtn.textContent = allExpanded ? 'Collapse All' : 'Expand All';
+});
+
+// ─── SCROLL ANIMATIONS ───
+function initAnimations() {
+  const els = document.querySelectorAll('.animate-in');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 60);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  els.forEach(el => observer.observe(el));
+}
+</script>
+</body>
+</html>
